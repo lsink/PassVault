@@ -1,0 +1,369 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+
+
+<h3>{{company.name}} {{ company.city }}</h3>
+
+<!-- BEGIN ADDRESS -->
+<div style="margin-top: -15px;font-size:12px;">
+    <address><em>{% if company.address1 %}{{ company.address1 }}{% endif %}
+        {% if company.city %} {{company.city}}{% endif %}{% if company.state %} {{ company.state }}{% endif %}
+        {% if company.zipcode %}{{ company.zipcode }}{% endif %}</em></address>
+</div><!-- ADDRESS END-->
+<div class="row">
+    <div class="col-xs-12 col-md-6">
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <h3 class="panel-title">Contacts</h3>
+            </div>
+            {% for customer in customers %}
+            <a href="/customer/{{customer.slug}}/" class="list-group-item">{{ customer.first_name }} {{
+                customer.last_name }} <span class="glyphicon glyphicon-chevron-right pull-right"></span></a>
+            {% endfor %}
+        </div>
+        <div class="visible-xs">
+            <hr/>
+        </div>
+    </div>
+    <div class="col-xs-12 col-md-6">
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <h3 class="panel-title">Last Note</h3>
+            </div>
+            {% if latest_note %}
+            <blockquote>
+                <p style="font-size: 16px;">{{ latest_note.text }}</p>
+                <small>{{ latest_note.timestamp }}</small>
+            </blockquote>
+            {% else %}
+            <ul class="list-group">
+                <li class="list-group-item">No notes</li>
+            </ul>
+            {% endif %}
+            <div class="clearfix" style="padding-left: 5px;padding-right: 5px;padding-bottom: 5px;">
+                <button id="newnote" class="btn btn-default btn-xs pull-left"><span class="glyphicon glyphicon-plus" style="color: green; font-size: 10px;vertical-align:2px"></span>Add Note
+                </button>
+                <a id="viewall" class="btn btn-primary btn-xs pull-right" href="/notes/{{company.slug}}">View All Notes</a>
+            </div>
+            <!-- HIDDEN ADD NOTE FORM -->
+            <div id="form" class="clearfix"
+                 style="display:none;padding-left: 5px;padding-right: 5px;padding-bottom: 5px;">
+                <form role="form" method="POST" action="addnote"> {% csrf_token %}
+                    <textarea name="text" id="focusedInput" placeholder="Create new note" required="required"
+                              class="form-control" rows="3"></textarea>
+                    <button class="btn btn-default btn-xs pull-left" type="submit"><span
+                            class="glyphicon glyphicon-plus"
+                            style="color: green; font-size: 10px;vertical-align:2px"></span>Add Note
+                    </button>
+                    <a class="btn btn-primary btn-xs pull-right" href="/notes/{{company.slug}}">View All Notes</a>
+                </form>
+            </div>
+            <!-- HIDDEN ADD NOTE -->
+        </div>
+    </div>
+    <div class="visible-xs">
+        <hr/>
+    </div>
+    {% if passwords %}
+    <!-- PASSWORDS PANEL -->
+    <div class="col-xs-12 col-md-6">
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <h3 class="panel-title">Passwords</h3>
+            </div>
+            {% for password in passwords %}
+                <a href="#{{ password.id }}" class="list-group-item" data-toggle="collapse" data-target="#{{ password.id }}">{{ password.location }}</a>
+                <div id="{{ password.id }}" class="panel-collapse collapse">
+                    <div class="panel-body">
+                        <div>
+                            <strong>Username:</strong> {{ password.username }}<br/>
+                            <strong>Password:</strong> <span class="" id="placeholder{{password.id}}">{%if password.password%}*****</span> <span style="display: none; font-style: italic;" id="field{{password.id}}">{{ password.password }}</span> <div class="pull-right"><button style="display: inline;" class="btn btn-danger btn-xs action_btn" id="show_btn{{password.id}}">Show Password</button><button style="display: none;" class="btn btn-success btn-xs action_btn" id="btn_hide{{password.id}}">Hide Password</button></div>{%endif%}
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+            
+        </div>
+    </div>
+    <hr/>
+    {% endif %}
+    <!-- TOOLS PANEL -->
+    <div class="col-xs-12 col-md-6">
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <h3 class="panel-title">Tools</h3>
+            </div>
+            <a data-toggle="modal" href="#mapModal" class="list-group-item">Map/Directions <span
+                    class="glyphicon glyphicon-map-marker pull-right"></span></a>
+            <a data-toggle="modal" href="#tollModal" class="list-group-item">Tolls Calculator <span
+                    class="glyphicon glyphicon-road pull-right"></span></a>
+        </div>
+        <div class="visible-xs">
+            <hr/>
+        </div>
+    </div>
+    <!-- /.Tools Panel -->
+</div>
+
+<!-- MAP Modal -->
+<div class="modal fade" id="mapModal" tabindex="-1" role="dialog" aria-labelledby="mapModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">Map</h4>
+            </div>
+            <div class="modal-body">
+                <div id="map-canvas"></div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <a href="http://maps.apple.com/?q={{ company.address1 }}+{{company.city}}+{{company.state}}"
+                   class="btn btn-primary">Directions</a>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<!-- TOLL MODAL -->
+<div class="modal fade" id="tollModal" tabindex="-1" role="dialog" aria-labelledby="tollModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">Tolls Calculator</h4>
+            </div>
+            <form class="form-horizontal" role="form" name="Cars">
+                <div class="modal-body">
+                    <!-- MODAL BODY -->
+
+                    <div class="row-fluid">
+                        <div class="col-md-5">
+                            <div class="form-group">
+                                <label for="EntryInterchange" class="control-label">
+                                    Select Entry Interchange
+                                </label>
+                                <select class="form-control input-sm" id="EntryInterchange" name="EntryInterchange">
+                                    <option value="3">01 Delaware Memorial Bridge</option>
+                                    <option value="4">02 US322, Swedesboro, Chester</option>
+                                    <option value="5">03 NJ168, Woodbury, S. Camden</option>
+                                    <option value="6">04 NJ73, Camden, Philadelphia</option>
+                                    <option value="7">05 Burlington, Mt. Holly</option>
+                                    <option value="8">06 Pennsylvania Turnpike</option>
+                                    <option value="9">06A Pennsylvania Turnpike, Florence</option>
+                                    <option value="10">07 US 206, Bordentown, Trenton</option>
+                                    <option value="11">07A I-195, Trenton, Hamilton</option>
+                                    <option value="12">08 NJ-33, Hightstown, Freehold</option>
+                                    <option value="13">08A Cranbury, Jamesburg</option>
+                                    <option value="14">09 NJ-18, New Brunswick</option>
+                                    <option value="15">10 I-287, Metuchen, Perth Amboy</option>
+                                    <option value="16">11 Garden State Parkway</option>
+                                    <option value="17">12 Carteret, Rahway</option>
+                                    <option value="18">13 I-278, Elizabeth, Staten Island</option>
+                                    <option value="19">13A Newark Airport, Eliz. Seaport</option>
+                                    <option value="20">14 Newark Airport, I-78, US 1 and 9</option>
+                                    <option value="21">14A Hudson Cty, Ext, Bayonne</option>
+                                    <option value="22">14B Jersey City, Liberty St. Park</option>
+                                    <option value="23">14C Holland Tunnel</option>
+                                    <option value="24">15E US 1 and 9, Newark, Jersey City</option>
+                                    <option value="25">15W I-280, Newark, Harrison</option>
+                                    <option value="26">15X Secaucus Transfer Station, Secaucus</option>
+                                    <option value="27">16E NJ-3, Lincoln Tunnel, Secaucus</option>
+                                    <option value="28">16W NJ-3, Sportsplex, E. Rutherford</option>
+                                    <option value="29">17N NJ-3, Lincoln Tunnel, is Toll Free</option>
+                                    <option value="30">17S NJ-3, Lincoln Tunnel, Secaucus</option>
+                                    <option value="31">18E GWB, US46, I-80, Ridgefield Park</option>
+                                    <option value="32">18W GWB, US46, I-80, Ridgefield Park</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-5 col-md-offset-1">
+                            <div class="form-group">
+                                <label for="ExitInterchange" class="control-label">
+                                    Select Exit Interchange
+                                </label>
+                                <select class="form-control input-sm" id="ExitInterchange" name="ExitInterchange">
+                                    <option value="1">01 Delaware Memorial Bridge</option>
+                                    <option value="2">02 US322, Swedesboro, Chester</option>
+                                    <option value="3">03 NJ168, Woodbury, S. Camden</option>
+                                    <option value="4">04 NJ73, Camden, Philadelphia</option>
+                                    <option value="5">05 Burlington, Mt. Holly</option>
+                                    <option value="6">06 Pennsylvania Turnpike</option>
+                                    <option value="7">06A Pennsylvania Turnpike, Florence</option>
+                                    <option value="8">07 US 206, Bordentown, Trenton</option>
+                                    <option value="9">07A I-195, Trenton, Hamilton</option>
+                                    <option value="10">08 NJ-33, Hightstown, Freehold</option>
+                                    <option value="11">08A Cranbury, Jamesburg</option>
+                                    <option value="12">09 NJ-18, New Brunswick</option>
+                                    <option value="13">10 I-287, Metuchen, Perth Amboy</option>
+                                    <option value="14">11 Garden State Parkway</option>
+                                    <option value="15">12 Carteret, Rahway</option>
+                                    <option value="16">13 I-278, Elizabeth, Staten Island</option>
+                                    <option value="17">13A Newark Airport, Eliz. Seaport</option>
+                                    <option value="18">14 Newark Airport, I-78, US 1 and 9</option>
+                                    <option value="19">14A Hudson Cty, Ext, Bayonne</option>
+                                    <option value="20">14B Jersey City, Liberty St. Park</option>
+                                    <option value="21">14C Holland Tunnel</option>
+                                    <option value="22">15E US 1 and 9, Newark, Jersey City</option>
+                                    <option value="23">15W I-280, Newark, Harrison</option>
+                                    <option value="24">15X Secaucus Transfer Station, Secaucus</option>
+                                    <option value="25">16E NJ-3, Lincoln Tunnel, Secaucus</option>
+                                    <option value="26">16W NJ-3, Sportsplex, E. Rutherford</option>
+                                    <option value="27">17N NJ-3, Lincoln Tunnel, is Toll Free</option>
+                                    <option value="28">17S NJ-3, Lincoln Tunnel, Secaucus</option>
+                                    <option value="29">18E GWB, US46, I-80, Ridgefield Park</option>
+                                    <option value="30">18W GWB, US46, I-80, Ridgefield Park</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row-fluid">
+                        <div class="col-md-5 col-xs-12">
+                            <div class="form-group">
+                                <label for="TransType" class="control-label">
+                                    Select Payment Method
+                                </label>
+                                <select class="form-control input-sm" id="TransType">
+                                    <option value="2">CASH</option>
+                                    <option value="0">E-Z (Peak/Weekends)</option>
+                                    <option value="1">E-Z (Off Peak)</option>
+                                    <option value="3">SENIOR</option>
+                                    <option value="4">GREEN</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-4 col-md-offset-1">
+                            <div class="form-group">
+                                <label for="MileLabel" class="control-label">
+                                    Mileage:
+                                </label>
+                                <input id="text2" name="text2"/><br/>
+                                <label for="TollLabel" class="control-label">
+                                    Toll Due:
+                                </label>
+                                <input id="text1" name="text1"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="hidden-xs">
+                        <input name="button1" type="button" id="button1" class="btn btn-primary"
+                               style="margin-top:-90px;" onclick="return button1_onclick(this.form)"
+                               value="Calculate Toll">
+                    </div>
+                    <div class="visible-xs">
+                        <input name="button1" type="button" id="button1" class="btn btn-primary"
+                               onclick="return button1_onclick(this.form)" value="Calculate Toll">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </form>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+
+{% endblock %}
+
+
+{% block jquery %}
+<script>
+    $(document).ready(function () {
+
+        $("#newnote").click(function (event) {
+
+            $("#newnote").addClass("hidden");
+            $("#viewall").addClass("hidden");
+            $("#form").slideDown('slow', function () {
+                // Animation complete.
+            });
+            //$(".hidden").removeClass("hidden");
+
+
+        });
+
+        $('#mapModal').on('shown.bs.modal', function () {
+            initialize();
+        });
+        $(window).resize(function () {
+            var h = $(window).height(),
+                    offsetTop = 200; // Calculate the top offset
+
+            $('#map-canvas').css('height', (h - offsetTop));
+        }).resize();
+
+
+        $(".action_btn").click(function(event){
+            var fieldnum = this.id.replace( /^\D+/g, '');
+            var field = "#field" + fieldnum;
+            var placeholder = "#placeholder" + fieldnum;
+            $(placeholder).toggleClass("hidden");
+            $(field).toggle();
+            var text = $(this).text() == 'Show Password' ? 'Hide Password' : 'Show Password';
+            $(this)
+            .text(text)
+            .toggleClass("btn-danger btn-success"); 
+        });
+        
+
+    });
+
+</script>
+
+
+{% endblock %}
+
+{% block js %}
+
+<script src="/static/js/tptoll.js"></script>
+<style>
+    html, body, #map-canvas {
+        margin: 0;
+        padding: 0;
+        height: 100%;
+    }
+</style>
+<script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false"></script>
+
+
+<script>
+    var geocoder;
+    var map;
+    function initialize() {
+        geocoder = new google.maps.Geocoder();
+        var latlng = new google.maps.LatLng(-34.397, 150.644);
+        var mapOptions = {
+            zoom: 13,
+            center: latlng,
+            mapTypeId: google.maps.MapTypeId.ROADMAP
+        }
+        map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
+        codeAddress();
+    }
+
+    function codeAddress() {
+        var address = '{{company.address1}} {{company.city}} {{company.state}} {{company.zipcode}}';
+        geocoder.geocode({ 'address': address}, function (results, status) {
+            if (status == google.maps.GeocoderStatus.OK) {
+                map.setCenter(results[0].geometry.location);
+                var marker = new google.maps.Marker({
+                    map: map,
+                    position: results[0].geometry.location
+                });
+            } else {
+                alert('Geocode was not successful for the following reason: ' + status);
+            }
+        });
+    }
+
+    google.maps.event.addDomListener(window, 'load', initialize);
+</script>
+
+{% endblock %}

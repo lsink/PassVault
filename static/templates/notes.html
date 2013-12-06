@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+
+<h3>{{company.name}} {{ company.city }}</h3>
+
+<!-- BEGIN TITLE -->
+<div class="under-title">Notes</div>
+<!-- END TITLE -->
+
+{% for note in notes %}
+
+<blockquote>
+    <p>{{ note.text }}</p>
+    <small>{{note.timestamp}}</small>
+</blockquote>
+{% endfor %}
+
+
+{% endblock %}

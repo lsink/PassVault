@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+
+<h3>{{customer.first_name}} {{ customer.last_name }}</h3>
+
+<!-- BEGIN TITLE -->
+<div style="margin-top: -15px; margin-bottom: 25px; font-size:12px;"><em>{% if customer.title %}{{ customer.title }}{%
+    endif %}</em></div>
+<!-- END TITLE -->
+<p>Coming soon!</p>
+
+
+{% endblock %}

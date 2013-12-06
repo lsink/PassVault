@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        body {
+            width: 215.9mm;
+            height: 274.4mm;
+            margin-left: auto;
+            margin-right: auto;
+            margin-top: 5mm;
+            border-style: dashed;
+            border-width: .5mm;
+            font-size: 0px;
+        }
+
+        .inline {
+            display: inline-block;
+        }
+
+        .outer {
+            /* specify fixed width */
+            border-style: solid;
+            border-width: .5mm;
+            padding-left: 0px;
+            -webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
+            -moz-box-sizing: border-box; /* Firefox, other Gecko */
+            box-sizing: border-box; /* Opera/IE 8+ */
+        }
+
+        .inner {
+            /* specify padding, can be changed while remaining fixed width of .outer */
+            padding: .5mm;
+        }
+
+        .container {
+            font-size: 0;
+            display: inline-block;
+            vertical-align: top;
+            -webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
+            -moz-box-sizing: border-box; /* Firefox, other Gecko */
+            box-sizing: border-box;
+        }
+
+        .container > div {
+            font-size: 14px;
+        }
+
+        .move-left {
+            margin-left: -1px;
+        }
+
+        .move-up {
+            margin-top: -1px;
+        }
+
+        .row {
+            font-size: 0px;
+            letter-spacing: 0px;
+            word-spacing: 0px;
+
+        }
+    </style>
+<head>
+<body>
+<div class="row">
+    <!-- LOGO -->
+    <div class="container" style="width: 400px; height: 50px;">
+        <div class="outer" style="width: inherit; height: inherit">
+            <div class="inner">
+                <!-- CONTENT -->
+            </div>
+            <!-- end .inner -->
+        </div>
+        <!-- end .outter -->
+    </div>
+    <!-- SERVICE AGENT -->
+    <div class="container" style="width: 208px; height: 50px;">
+        <div class="outer move-left" style="width: 208px; height: 20px;">
+            <div class="inner">
+                Service Agent ID<!-- CONTENT -->
+            </div>
+            <!-- end .inner -->
+        </div>
+        <!-- end .outter -->
+        <div class="outer move-left" style="width: 208px; height: 31px; margin-top: -1px;">
+            <div class="inner">
+                C<!-- CONTENT -->
+            </div>
+            <!-- end .inner -->
+        </div>
+        <!-- end .outter -->
+    </div>
+    <!-- PAGE NUMBER -->
+    <div class="container move-left" style="width: 209px; height: 50px;">
+        <div class="outer move-left" style="width: 210px; height: 20px;">
+            <div class="inner">
+                Page 1 of 1<!-- CONTENT -->
+            </div>
+            <!-- end .inner -->
+        </div>
+        <!-- end .outter -->
+        <div class="outer move-left" style="width: 210px; height: 31px; margin-top: -1px;">
+            <div class="inner">
+                <!-- CONTENT -->
+            </div>
+            <!-- end .inner -->
+        </div>
+        <!-- end .outter -->
+    </div>
+</div>
+<div class="row">
+    <div class="container move-up" style="width: 400px; height: 30px;">
+        <div class="outer" style="width: inherit; height: inherit">
+            <div class="inner">
+                Customer Name:<!-- CONTENT -->
+            </div>
+            <!-- end .inner -->
+        </div>
+        <!-- end .outter -->
+    </div>
+    <div class="container move-up move-left" style="width: 417px; height: 30px;">
+        <div class="outer" style="width: inherit; height: inherit">
+            <div class="inner">
+                Service Order #:<!-- CONTENT -->
+            </div>
+            <!-- end .inner -->
+        </div>
+        <!-- end .outter -->
+    </div>
+</div>
+<div class="row">
+    <div class="container move-up" style="width: 400px; height: 30px;">
+        <div class="outer" style="width: inherit; height: inherit">
+            <div class="inner">
+                Bill To:<!-- CONTENT -->
+            </div>
+            <!-- end .inner -->
+        </div>
+        <!-- end .outter -->
+    </div>
+    <div class="container move-up move-left" style="width: 417px; height: 30px;">
+        <div class="outer" style="width: inherit; height: inherit">
+            <div class="inner">
+                Equipment ID:<!-- CONTENT -->
+            </div>
+            <!-- end .inner -->
+        </div>
+        <!-- end .outter -->
+    </div>
+</div>
+<div class="row">
+    <div class="container move-up" style="width: 400px; height: 30px;">
+        <div class="outer" style="width: inherit; height: inherit">
+            <div class="inner">
+                Work Site:<!-- CONTENT -->
+            </div>
+            <!-- end .inner -->
+        </div>
+        <!-- end .outter -->
+    </div>
+    <div class="container move-up move-left" style="width: 417px; height: 30px;">
+        <div class="outer" style="width: inherit; height: inherit">
+            <div class="inner">
+                Reason for visit:<!-- CONTENT -->
+            </div>
+            <!-- end .inner -->
+        </div>
+        <!-- end .outter -->
+    </div>
+</div>
+<div class="row">
+    <div class="container move-up" style="width: 400px; height: 30px;">
+        <div class="outer" style="width: inherit; height: inherit">
+            <div class="inner">
+                Work Site Address:<!-- CONTENT -->
+            </div>
+            <!-- end .inner -->
+        </div>
+        <!-- end .outter -->
+    </div>
+    <div class="container move-up move-left" style="width: 417px; height: 30px;">
+        <div class="outer" style="width: inherit; height: inherit">
+            <div class="inner">
+                Contact Name/Phone:<!-- CONTENT -->
+            </div>
+            <!-- end .inner -->
+        </div>
+        <!-- end .outter -->
+    </div>
+</div>
+<div class="row">
+    <div class="container move-up" style="width: 816px; height: 50px;">
+        <div class="outer" style="width: inherit; height: inherit">
+            <div class="inner">
+                Additional Billing Information:<!-- CONTENT -->
+            </div>
+            <!-- end .inner -->
+        </div>
+        <!-- end .outter -->
+    </div>
+</div>
+<div class="row">
+    <div class="container move-up" style="width: 400px; height: 30px;">
+        <div class="outer" style="width: inherit; height: inherit">
+            <div class="inner">
+                Quoted Price/Flate Rate:<!-- CONTENT -->
+            </div>
+            <!-- end .inner -->
+        </div>
+        <!-- end .outter -->
+    </div>
+    <div class="container move-up move-left" style="width: 417px; height: 30px;">
+        <div class="outer" style="width: inherit; height: inherit">
+            <div class="inner">
+                Service Order Resolved: <span style="padding: 0 40px">&nbsp;</span>Date:<!-- CONTENT -->
+            </div>
+            <!-- end .inner -->
+        </div>
+        <!-- end .outter -->
+    </div>
+</div>
+
+<div class="row">
+    <div class="container move-up" style="width: 816px; height: 20px;">
+        <div class="outer" style="width: inherit; height: inherit">
+            <div class="inner">
+                Customer Payment Authorization<!-- CONTENT -->
+            </div>
+            <!-- end .inner -->
+        </div>
+        <!-- end .outter -->
+    </div>
+</div>
+
+<div class="row">
+    <div class="container move-up" style="width: 200px; height: 25px;">
+        <div class="outer" style="width: inherit; height: inherit">
+            <div class="inner">
+                PO#:<!-- CONTENT -->
+            </div>
+            <!-- end .inner -->
+        </div>
+        <!-- end .outter -->
+    </div>
+    <div class="container move-up move-left" style="width: 300px; height: 25px;">
+        <div class="outer" style="width: inherit; height: inherit">
+            <div class="inner">
+                Customer Signature:<!-- CONTENT -->
+            </div>
+            <!-- end .inner -->
+        </div>
+        <!-- end .outter -->
+    </div>
+    <div class="container move-up move-left" style="width: 318px; height: 25px;">
+        <div class="outer" style="width: inherit; height: inherit">
+            <div class="inner">
+                Print Name:<!-- CONTENT -->
+            </div>
+            <!-- end .inner -->
+        </div>
+        <!-- end .outter -->
+    </div>
+</div>
+
+
+<div class="row">
+    <div class="container move-up" style="width: 370px; height: 20px;">
+        <div class="outer" style="width: inherit; height: inherit">
+            <div class="inner">
+                Labor Activities<!-- CONTENT -->
+            </div>
+            <!-- end .inner -->
+        </div>
+        <!-- end .outter -->
+    </div>
+    <div class="container move-up move-left" style="width: 447px; height: 20px;">
+        <div class="outer" style="width: inherit; height: inherit">
+            <div class="inner">
+                Comments<!-- CONTENT -->
+            </div>
+            <!-- end .inner -->
+        </div>
+        <!-- end .outter -->
+    </div>
+</div>
+
+</body>
+</html>
